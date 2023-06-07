@@ -1,0 +1,68 @@
+﻿@model ContractCreateViewModel
+
+@{
+    ViewData["Title"] = "Vytvořit Smlouvu";
+}
+
+<div class="col-12 col-xl-10">
+    <h2>Vytvořit Novou Smlouvu</h2>
+    <hr />
+    <form asp-action="Create">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mt-1">
+                    <label asp-for="EvidenceNumber" class="control-label"></label>
+                    <input asp-for="EvidenceNumber" class="form-control" />
+                    <span asp-validation-for="EvidenceNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-1">
+                    <label asp-for="Institution" class="control-label"></label>
+                    <input asp-for="Institution" class="form-control" />
+                    <span asp-validation-for="Institution" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-1">
+                    <label asp-for="DateSigned" class="control-label"></label>
+                    <input asp-for="DateSigned" class="form-control" />
+                    <span asp-validation-for="DateSigned" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-1">
+                    <label asp-for="DateValidStart" class="control-label"></label>
+                    <input asp-for="DateValidStart" class="form-control" />
+                    <span asp-validation-for="DateValidStart" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-1">
+                    <label asp-for="DateValidEnd" class="control-label"></label>
+                    <input asp-for="DateValidEnd" class="form-control" />
+                    <span asp-validation-for="DateValidEnd" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 form-group my-4 m-md-0">
+                <label class="control-label" for="consultantSearch">Vyhledat poradce:</label>
+                <input class="form-control" type="text" id="consultantSearch" />
+                <label class="control-label mt-2" for="consultantResult">Vybraní poradci:</label>
+                <div id="consultantResult" class="border rounded d-flex flex-column" style="min-height: 25vh;"></div>
+                <span asp-validation-for="ConsultantIds" class="text-danger"></span>
+            </div>
+            <div class="col-6 col-md-3 form-group my-4 m-md-0">
+                <label class="control-label" for="clientSearch">Vyhledat klienta:</label>
+                <input class="form-control" type="text" id="clientSearch" />
+                <label class="control-label mt-2" for="clientResult">Vybraný klient:</label>
+                <select class="form-select" id="clientResult" name="ClientId"></select>
+                <span asp-validation-for="ClientId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12 form-group mt-md-3">
+            <input type="submit" value="Vytvořit" class="btn btn-primary d-inline-block" />
+            <a asp-action="Index" class="btn btn-outline-secondary" role="button">Zpět</a>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_LiveSearchJS");
+    }
+}

@@ -1,0 +1,87 @@
+﻿<script defer>
+    var searchTimeout;
+    var checkedIds;
+
+    document.getElementById('consultantSearch').addEventListener('keyup', function (e) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function () {
+            consultantSearch();
+        }, 800);
+    });
+
+    document.getElementById('clientSearch').addEventListener('keyup', function (e) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function () {
+            clientSearch();
+        }, 400);
+    });
+
+    window.onload = function () {
+        consultantSearch();
+        clientSearch();
+    };
+
+    function consultantSearch() {
+        var value = document.getElementById('consultantSearch').value;
+        $('#consultantResult div input[type="checkbox"]:not(:checked)').closest('div').remove();
+        $('#notFound').remove();
+        checkedIds = $('.searchCheckbox:checked').map(function () {
+            return $(this).val();
+        }).get();
+
+        $.ajax({
+            type: "GET",
+            url: "/Contracts/SearchFor",
+            dataType: 'json',
+            data: { searchTerm: value, entity: "consultant" },
+            success: function (data) {
+                if ($.isEmptyObject(data) && checkedIds.length == 0) {
+                    $('#consultantResult').append('<span id="notFound" class="ms-4 mt-4">Nic nenalezeno</span>');
+                } else {
+                    var html = "";
+                    var i = 1;
+                    $.each(data, function (id, fullname) {
+                        if ($.inArray(id, checkedIds) == -1) {
+                            html += '<div class="form-check ms-4 mt-2">'
+                                + '<input class="form-check-input searchCheckbox" type="checkbox" name="ConsultantIds" value = "' + id + '" id = "flexCheckDefault' + ++i + '" >'
+                                + '<label class="form-check-label" for="flexCheckDefault' + i + '" >'
+                                + fullname + '</label></div>';
+                        }
+                    });
+                    $('#consultantResult').append(html);
+                }
+            },
+            error: function (ex) {
+                console.log(ex.Message);
+            }
+        });
+    }
+
+    function clientSearch() {
+        var value = document.getElementById('clientSearch').value;
+        $('#clientResult option').remove();
+
+        $.ajax({
+            type: "GET",
+            url: "/Contracts/SearchFor",
+            dataType: 'json',
+            data: { searchTerm: value, entity: "client" },
+            success: function (data) {
+                if ($.isEmptyObject(data)) {
+                    $('#clientResult').append('<option id="notFoundClient" value="">Nic nenalezeno</option>');
+                } else {
+                    var html = "";
+                    $.each(data, function (id, fullname) {
+                        if ($.inArray(id, checkedIds) == -1) {
+                            html += '<option value="' + id + '">' + fullname + '</option>';
+                        }
+                    });
+                    $('#clientResult').append(html);
+                }
+            },
+            error: function (ex) {
+                console.log(ex.Message);
+            }
+        });
+    }
+</script>

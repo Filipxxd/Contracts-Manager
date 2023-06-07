@@ -1,0 +1,31 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Domovská stránka";
+}
+
+<div class="col-12 col-md-8">
+    <h3>Statistika</h3>
+    <div class="row justify-content-evenly">
+        <div class="text-center py-4 col-12 col-sm-6 col-xl-4 d-flex flex-column border rounded-3 justify-content-center ">
+            <span class="fw-bold">Statistika poradců</span>
+            <span>Počet poradců: <strong>@Model.ConsultantsInfo["count"].ToString()</strong></span>
+            <span>Nad 60 let s 1+ smlouvou: <strong>@Model.ConsultantsInfo["oldest"].ToString()</strong></span>
+            <span>Beze smluv: <strong>@Model.ConsultantsInfo["without"].ToString()</strong></span>
+        </div>
+
+        <div class="text-center py-4 col-12 col-sm-6 col-xl-4 d-flex flex-column border rounded-3 justify-content-center align-content-center">
+            <span class="fw-bold">Statistika klientů</span>
+            <span>Počet klientů: <strong>@Model.ClientsInfo["count"].ToString()</strong></span>
+            <span>S počtem smluv více než 5: <strong>@Model.ClientsInfo["contracts"].ToString()</strong></span>
+            <span>Bez smluv: <strong>@Model.ClientsInfo["without"].ToString()</strong></span>
+        </div>
+
+        <div class="text-center py-4 col-12 col-sm-6 col-xl-4 d-flex flex-column border rounded-3 justify-content-center align-content-center">
+            <span class="fw-bold">Statistika smluv</span>
+            <span>Počet smluv: <strong>@Model.ContractsInfo["count"].ToString()</strong></span>
+            <span>Platných: <strong>@Model.ContractsInfo["valid"].ToString()</strong></span>
+            <span>S více než 1 poradcem: <strong>@Model.ContractsInfo["moreThan1"].ToString()</strong></span>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,128 @@
+﻿@model ClientDetailsViewModel
+
+@{
+    ViewData["Title"] = "Podrobnosti Klienta";
+}
+
+<div class="col-12 col-lg-5">
+    <h3>Podrobnosti</h3>
+    <br/>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Client.FirstName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Client.FirstName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Client.LastName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Client.LastName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Client.Age)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Client.Age)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Client.Email)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Client.Email)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Client.Phone)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Client.Phone)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Client.BirthNumber)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Client.BirthNumber)
+        </dd>
+    </dl>
+</div>
+<div class="col-12 col-lg-7">
+    <h3>Smlouvy</h3>
+    <br />
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Evidenční číslo</th>
+                <th>Instituce</th>
+                <th>Datum uzavření</th>
+                <th>Platnost</th>
+                <th></th>
+            </tr>
+            @if (Model._Contracts.Count < 1)
+            {
+                <tr>
+                    <td colspan="5" class="text-center">
+                        Nenalezeny žádné smlouvy!
+                    </td>
+                </tr>
+            }
+            else
+                foreach (var item in Model._Contracts)
+                {
+                    <tr>
+                        <td>
+                            @item.EvidenceNumber
+                        </td>
+                        <td>
+                            @item.Institution
+                        </td>
+                        <td>
+                            @item.DateSigned
+                        </td>
+                        <td>
+                            @(item.DateValidStart.Date.ToShortDateString()) - @(item.DateValidEnd.ToShortDateString())
+                        </td>
+                        <td>
+                            <a asp-controller="Contracts" asp-action="Details" asp-route-id="@item.ContractId">Podrobnosti</a>
+                        </td>
+                    </tr>
+                }
+        </table>
+    </div>
+    @{
+        var prevDisabled = @Model._Contracts.HasPreviousPage ? "" : "disabled";
+        var nextDisabled = @Model._Contracts.HasNextPage ? "" : "disabled";
+    }
+    <ul class="pagination justify-content-center">
+        <li class="page-item @prevDisabled">
+            <a class="page-link" title="Předchozí"
+               sp-action="Index"
+               asp-route-sortOrder="@ViewBag.SortOrder"
+               asp-route-pageNumber="@(Model._Contracts.PageIndex - 1)"
+               asp-route-searchString="@ViewBag.SearchString">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">@Model._Contracts.PageIndex</a>
+        </li>
+        <li class="page-item @nextDisabled">
+            <a class="page-link" title="Další"
+               asp-action="Index"
+               asp-route-sortOrder="@ViewBag.SortOrder"
+               asp-route-pageNumber="@(Model._Contracts.PageIndex + 1)"
+               asp-route-searchString="@ViewBag.SearchString"
+               class="btn btn-default @nextDisabled">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="col-12 mt-1">
+    <a asp-action="Index" class="btn btn-outline-secondary" role="button">Zpět</a>
+    <a asp-action="Edit" asp-route-id="@Model._Client.ClientId" class="btn btn-outline-primary">Upravit</a>
+    <form asp-action="Delete" class="d-inline-block">
+        <input type="hidden" name="id" value="@Model._Client.ClientId" />
+        <input type="submit" value="Odstranit" class="btn btn-danger" role="button" />
+    </form>
+</div>

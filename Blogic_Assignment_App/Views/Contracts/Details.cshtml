@@ -1,0 +1,125 @@
+﻿@model ContractDetailsViewModel
+
+@{
+    ViewData["Title"] = "Podrobnosti Smlouvy";
+}
+
+<div class="col-12 col-lg-5">
+    <h3>Podrobnosti</h3>
+    <br/>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Contract.EvidenceNumber)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Contract.EvidenceNumber)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Contract.Institution)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Contract.Institution)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Contract.DateSigned)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Contract.DateSigned)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Contract.DateValidStart)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Contract.DateValidStart)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Contract.DateValidEnd)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model._Contract.DateValidEnd)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model._Contract.Client.FullName)
+        </dt>
+        <dd class="col-sm-9">
+            <a asp-controller="Clients" asp-action="Details" asp-route-id="@Model._Contract.ClientId">@Html.DisplayFor(model => model._Contract.Client.FullName)</a>
+        </dd>
+    </dl>
+</div>
+<div class="col-12 col-lg-7">
+    <h3>Poradci</h3>
+    <br />
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Křestní Jméno</th>
+                <th>Příjmení</th>
+                <th>Telefon</th>
+                <th></th>
+            </tr>
+            @if (Model._Consultants.Count < 1)
+            {
+                <tr>
+                    <td colspan="5" class="text-center">
+                        Nenalezeny žádní konzultanti!
+                    </td>
+                </tr>
+            }else
+            {
+                foreach (var item in Model._Consultants)
+                {
+                    <tr>
+                        <td>
+                            @item.FirstName
+                        </td>
+                        <td>
+                            @item.LastName
+                        </td>
+                        <td>
+                            @item.Phone
+                        </td>
+                        <td>
+                            <a asp-controller="Consultants" asp-action="Details" asp-route-id="@item.ConsultantId">Podrobnosti</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    @{
+        var prevDisabled = @Model._Consultants.HasPreviousPage ? "" : "disabled";
+        var nextDisabled = @Model._Consultants.HasNextPage ? "" : "disabled";
+    }
+    <ul class="pagination justify-content-center">
+        <li class="page-item @prevDisabled">
+            <a class="page-link" title="Předchozí"
+               sp-action="Index"
+               asp-route-sortOrder="@ViewBag.SortOrder"
+               asp-route-pageNumber="@(Model._Consultants.PageIndex - 1)"
+               asp-route-searchString="@ViewBag.SearchString">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">@Model._Consultants.PageIndex</a>
+        </li>
+        <li class="page-item @nextDisabled">
+            <a class="page-link" title="Další"
+               asp-action="Index"
+               asp-route-sortOrder="@ViewBag.SortOrder"
+               asp-route-pageNumber="@(Model._Consultants.PageIndex + 1)"
+               asp-route-searchString="@ViewBag.SearchString"
+               class="btn btn-default @nextDisabled">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="col-12 mt-1">
+    <a asp-action="Index" class="btn btn-outline-secondary" role="button">Zpět</a>
+    <a asp-action="Edit" asp-route-id="@Model._Contract.ContractId" class="btn btn-outline-primary">Upravit</a>
+    <form asp-action="Delete" class="d-inline-block">
+        <input type="hidden" name="id" value="@Model._Contract.ContractId"  />
+        <input type="submit" value="Odstranit" class="btn btn-danger" role="button" />
+    </form>
+</div>
