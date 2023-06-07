@@ -11,9 +11,13 @@ Aplikace je psána stylem „code-first“ s EntityFramework Core. Schéma datab
     * Client
     * Consultant
     * Contract 
-  * Views
+  * Views - CRUD
     * Shared
-      * xxxx   
+      * _LiveSearchJS
+    * Clients
+    * Consultants
+    * Contracts
+    * Home
   * ViewModels
     * Shared
       * PaginatedList
