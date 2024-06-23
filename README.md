@@ -1,4 +1,4 @@
-# Blogic_Assignment
+# Contracts-Manager
 
 ## Základní informace
 Aplikace je psána stylem „code-first“ s EntityFramework Core. Schéma databáze je TPC (Table Per Concrete Type). V aplikaci působí tři základní druhy entit: poradci, klienti a smlouvy. Mezi poradci a smlouvou je vztah „many-to-many“, takže je v databázi dotvořena pomocná entita. Mezi klientem a smlouvou „one-to-many“, tj. jeden klient s mnoho smlouvami.
